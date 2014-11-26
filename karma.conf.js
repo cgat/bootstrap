@@ -27,7 +27,7 @@ exclude = [
 // - Safari
 // - PhantomJS
 browsers = [
-  'Chrome'
+  'Firefox'
 ];
 
 // test results reporter to use
