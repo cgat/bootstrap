@@ -55,10 +55,10 @@ angular.module('ui.bootstrap.timepicker', [])
   }
 
 
-  var showSeconds = timepickerConfig.showSeconds;
+  $scope.showSeconds = timepickerConfig.showSeconds;
   if ($attrs.showSeconds) {
     $scope.$parent.$watch($parse($attrs.showSeconds), function(value) {
-      showSeconds = !!value;
+      $scope.showSeconds = !!value;
     });
   }
 
