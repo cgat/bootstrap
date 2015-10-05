@@ -30,18 +30,25 @@ describe('tooltip template', function() {
     tooltipScope = elmScope.$$childTail;
   }));
 
-  it('should open on mouseenter', inject(function() {
-    elm.trigger('mouseenter');
-    expect( tooltipScope.isOpen ).toBe( true );
+  function trigger(element, evt) {
+    evt = new Event(evt);
 
-    expect( elmBody.children().length ).toBe( 2 );
+    element[0].dispatchEvent(evt);
+    element.scope().$$childTail.$digest();
+  }
+
+  it('should open on mouseenter', inject(function() {
+    trigger(elm, 'mouseenter');
+    expect(tooltipScope.isOpen).toBe(true);
+
+    expect(elmBody.children().length).toBe(2);
   }));
 
   it('should not open on mouseenter if templateUrl is empty', inject(function() {
     scope.templateUrl = null;
     scope.$digest();
 
-    elm.trigger('mouseenter');
+    trigger(elm, 'mouseenter');
     expect(tooltipScope.isOpen).toBe(false);
 
     expect(elmBody.children().length).toBe(1);
@@ -49,10 +56,10 @@ describe('tooltip template', function() {
 
   it('should show updated text', inject(function() {
     scope.myTemplateText = 'some text';
-    scope.$digest();
 
-    elm.trigger('mouseenter');
+    trigger(elm, 'mouseenter');
     expect(tooltipScope.isOpen).toBe(true);
+    scope.$digest();
 
     expect(elmBody.children().eq(1).text().trim()).toBe('some text');
 
@@ -63,7 +70,7 @@ describe('tooltip template', function() {
   }));
 
   it('should hide tooltip when template becomes empty', inject(function($timeout) {
-    elm.trigger('mouseenter');
+    trigger(elm, 'mouseenter');
     expect(tooltipScope.isOpen).toBe(true);
 
     scope.templateUrl = '';
@@ -75,4 +82,3 @@ describe('tooltip template', function() {
     expect(elmBody.children().length).toBe(1);
   }));
 });
-

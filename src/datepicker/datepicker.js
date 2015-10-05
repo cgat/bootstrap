@@ -210,10 +210,8 @@ angular.module('ui.bootstrap.datepicker', ['ui.bootstrap.dateparser', 'ui.bootst
         return; // do nothing
       }
       $scope.select(self.activeDate);
-      focusElement();
     } else if (evt.ctrlKey && (key === 'up' || key === 'down')) {
       $scope.toggleMode(key === 'up' ? 1 : -1);
-      focusElement();
     } else {
       self.handleKeyDown(key, evt);
       self.refreshView();
@@ -494,7 +492,7 @@ angular.module('ui.bootstrap.datepicker', ['ui.bootstrap.dateparser', 'ui.bootst
   onOpenFocus: true
 })
 
-.directive('datepickerPopup', ['$compile', '$parse', '$document', '$rootScope', '$position', 'dateFilter', 'dateParser', 'datepickerPopupConfig', '$timeout',
+.directive('datepickerPopup', ['$compile', '$parse', '$document', '$rootScope', '$uibPosition', 'dateFilter', 'uibDateParser', 'datepickerPopupConfig', '$timeout',
 function($compile, $parse, $document, $rootScope, $position, dateFilter, dateParser, datepickerPopupConfig, $timeout) {
   return {
     restrict: 'EA',
@@ -595,7 +593,7 @@ function($compile, $parse, $document, $rootScope, $position, dateFilter, datePar
           delete options.initDate;
         }
         angular.forEach(options, function(value, option) {
-          datepickerEl.attr( cameltoDash(option), value );
+          datepickerEl.attr(cameltoDash(option), value);
         });
       }
 
@@ -715,7 +713,12 @@ function($compile, $parse, $document, $rootScope, $position, dateFilter, datePar
       });
 
       var documentClickBind = function(event) {
-        if (scope.isOpen && !element[0].contains(event.target)) {
+        var popup = $popup[0];
+        var dpContainsTarget = element[0].contains(event.target);
+        // The popup node may not be an element node
+        // In some browsers (IE) only element nodes have the 'contains' function
+        var popupContainsTarget = popup.contains !== undefined && popup.contains(event.target);
+        if (scope.isOpen && !(dpContainsTarget || popupContainsTarget)) {
           scope.$apply(function() {
             scope.isOpen = false;
           });

@@ -2,8 +2,8 @@ describe('date parser', function() {
   var dateParser;
 
   beforeEach(module('ui.bootstrap.dateparser'));
-  beforeEach(inject(function (_dateParser_) {
-    dateParser = _dateParser_;
+  beforeEach(inject(function (uibDateParser) {
+    dateParser = uibDateParser;
   }));
 
   function expectParse(input, format, date) {
@@ -212,4 +212,46 @@ describe('date parser', function() {
   it('should not parse if no format is specified', function() {
     expect(dateParser.parse('21.08.1951', '')).toBe('21.08.1951');
   });
+
+  it('should reinitialize when locale changes', inject(function($locale) {
+    spyOn(dateParser, 'init').and.callThrough();
+    expect($locale.id).toBe('en-us');
+
+    $locale.id = 'en-uk';
+
+    dateParser.parse('22.March.15.22', 'd.MMMM.yy.s');
+
+    expect(dateParser.init).toHaveBeenCalled();
+  }));
+});
+
+/* Deprecation tests below */
+
+describe('date parser deprecation', function() {
+  beforeEach(module('ui.bootstrap.dateparser'));
+
+  it('should suppress warning', function() {
+    module(function($provide) {
+      $provide.value('$dateParserSuppressWarning', true);
+    });
+
+    inject(function($log, dateParser) {
+      spyOn($log, 'warn');
+
+      dateParser.parse('01.10.2015', 'dd.MM.yyyy');
+
+      expect($log.warn.calls.count()).toBe(0);
+    });
+  });
+
+  it('should give warning by default', inject(function($log) {
+    spyOn($log, 'warn');
+
+    inject(function(dateParser) {
+      dateParser.parse('01.10.2015', 'dd.MM.yyyy');
+
+      expect($log.warn.calls.count()).toBe(1);
+      expect($log.warn.calls.argsFor(0)).toEqual(['dateParser is now deprecated. Use uibDateParser instead.']);
+    });
+  }));
 });

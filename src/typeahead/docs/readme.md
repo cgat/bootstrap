@@ -24,6 +24,9 @@ The typeahead directives provide several attributes:
 * `typeahead-append-to-body` <i class="glyphicon glyphicon-eye-open"></i>
    _(Defaults: false)_ : Should the typeahead popup be appended to $body instead of the parent element?
 
+* `typeahead-append-to-element-id`
+   _(Defaults: false)_ : Should the typeahead popup be appended to an element id instead of the parent element?
+
 * `typeahead-editable` <i class="glyphicon glyphicon-eye-open"></i>
    _(Defaults: true)_ :
    Should it restrict model values to the ones selected from the popup only ?
@@ -59,6 +62,10 @@ The typeahead directives provide several attributes:
 * `typeahead-template-url` <i class="glyphicon glyphicon-eye-open"></i>
    :
    Set custom item template
+
+* `typeahead-popup-template-url`
+   _(Defaults: `template/typeahead/typeahead-popup.html`)_ :
+   Set custom popup template
 
 * `typeahead-wait-ms` <i class="glyphicon glyphicon-eye-open"></i>
    _(Defaults: 0)_ :

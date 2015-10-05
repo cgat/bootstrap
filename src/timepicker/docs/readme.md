@@ -2,11 +2,14 @@ A lightweight & configurable timepicker directive.
 
 ### Settings ###
 
-All settings can be provided as attributes in the `<timepicker>` or globally configured through the `timepickerConfig`.
+All settings can be provided as attributes in the `<uib-timepicker>` or globally configured through the `uibTimepickerConfig`.
 
  * `ng-model` <i class="glyphicon glyphicon-eye-open"></i>
  	:
  	The Date object that provides the time state.
+
+  * `template-url` (Defaults: `template/timepicker/timepicker.html`) :
+    Add the ability to override the template used on the component.
 
  * `hour-step` <i class="glyphicon glyphicon-eye-open"></i>
  	_(Defaults: 1)_ :
